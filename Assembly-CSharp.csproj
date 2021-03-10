@@ -36,7 +36,9 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Platform.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
+     <Compile Include="Assets\Scripts\Spawn.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/home/flavia/Unity/Hub/Editor/2019.4.21f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
@@ -583,12 +585,6 @@
     <Reference Include="Unity.Rider.Editor">
         <HintPath>/home/flavia/UFOP/CG/TP/Trabalho Pratico/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.TextMeshPro">
-        <HintPath>/home/flavia/UFOP/CG/TP/Trabalho Pratico/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.UI">
-        <HintPath>/home/flavia/UFOP/CG/TP/Trabalho Pratico/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Sysroot.Linux_x86_64">
         <HintPath>/home/flavia/UFOP/CG/TP/Trabalho Pratico/Library/ScriptAssemblies/Unity.Sysroot.Linux_x86_64.dll</HintPath>
     </Reference>
@@ -597,6 +593,12 @@
     </Reference>
     <Reference Include="Unity.SysrootPackage.Editor">
         <HintPath>/home/flavia/UFOP/CG/TP/Trabalho Pratico/Library/ScriptAssemblies/Unity.SysrootPackage.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+        <HintPath>/home/flavia/UFOP/CG/TP/Trabalho Pratico/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.UI">
+        <HintPath>/home/flavia/UFOP/CG/TP/Trabalho Pratico/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
