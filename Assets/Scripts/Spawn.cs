@@ -35,12 +35,15 @@ public class Spawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float distance = player.position.z - currentPlatformPoint.position.z;
+        float distance = player.transform.position.z - currentPlatforms[platformIndex].transform.position.z;
         Debug.Log("distance: " + distance);
-        if(distance >= 5) { // Acho que esse valor '5' precisará ficar dinâmico, proporcional à velocidade do player. 
-                            // Caso contrário, ao aumentar a velocidade as plataformas não são recicladas a tempo do player atingir o fim da última plataforma.
+        if (distance >= 80)
+        { 
             Recycle(currentPlatforms[platformIndex].gameObject);
-            platformIndex++;
+
+            if (platformIndex == platforms.Count - 1) platformIndex = 0;
+            else platformIndex++;
+
             currentPlatformPoint = currentPlatforms[platformIndex].GetComponent<Platform>().point;
         }
     }
@@ -48,7 +51,7 @@ public class Spawn : MonoBehaviour
     public void Recycle(GameObject platform) {
         platform.transform.position = new Vector3(0, 0, offset);
 
-        GenerateRandomObjects();
+        GenerateRandomObjectsAtPlatform(platform.transform.position);
         
         Debug.Log("reciclou");
         offset += 86;
@@ -57,23 +60,24 @@ public class Spawn : MonoBehaviour
     /*Preciso melhorar, mas está funcionando... Porém, acho que vou mudar pra que as posições dos objetos fiquem de acordo com a posição da nova plataforma, e não do player.
      Faz mais sentido, e acho que vai facilitar tbm*/
 
-    private void GenerateRandomObjects()
+    private void GenerateRandomObjectsAtPlatform(Vector3 plataformPosition)
     {
-        float numberOfNewObjects = 8; //Não sei se precisa ou não ser de acordo com o quão avançado o player está... com mais jogabilidade vamos descobrir.
-
-        float distanceFromPlayer = 50; //talvez também precisará ficar dinâmico, conforme a velocidade do player. 
+        float numberOfNewObjects = 4; //Não sei se precisa ou não ser de acordo com o quão avançado o player está... com mais jogabilidade vamos descobrir.
+        float newObjectPositionZ;
+        float newObjectPositionX;
+        float distanceAtPlatform = plataformPosition.z - 86;
         List<GameObject> newObjects = new List<GameObject>();
         int idx;
 
         for(int i = 0; i < numberOfNewObjects; i++)
         {
             idx = Random.Range(0, 2);
-            distanceFromPlayer += 25;
+            distanceAtPlatform += 20;
             switch (idx)
             {
                 case 0:
                     GameObject newCar = carObject;
-                    Vector3 newCarPosition = GenerateRandomPosition(distanceFromPlayer);                
+                    Vector3 newCarPosition = GenerateRandomPosition(plataformPosition, distanceAtPlatform);                
 
                     newObjects.Add(newCar);
 
@@ -81,7 +85,7 @@ public class Spawn : MonoBehaviour
                     break;    
                 case 1:
                     GameObject newRoadBlock = roadBlockObject;
-                    Vector3 newRoadBlockPosition = GenerateRandomPosition(distanceFromPlayer);
+                    Vector3 newRoadBlockPosition = GenerateRandomPosition(plataformPosition, distanceAtPlatform);
 
 
                     newObjects.Add(newRoadBlock);
@@ -93,10 +97,11 @@ public class Spawn : MonoBehaviour
 
     }
 
-    private Vector3 GenerateRandomPosition(float distanceFromPlayer)
+    //Gera qual o caminho em que o objeto estará.
+    private Vector3 GenerateRandomPosition(Vector3 plataformPosition, float distanceAtPlatform)
     {
-        Vector3 playerPosition = player.transform.position;
-        float position_X = -3;
+/*        Vector3 playerPosition = player.transform.position;
+*/      float position_X = 0;
         int pathIdx = Random.Range(0, 3);
 
         if (pathIdx == 0) position_X = firstPathPosition_X;
@@ -104,6 +109,6 @@ public class Spawn : MonoBehaviour
         else if (pathIdx == 2) position_X = thirdPathPosition_X;
         else Debug.Log("pathIdx fora do limite");
 
-        return new Vector3(position_X, playerPosition.y , playerPosition.z + distanceFromPlayer);
+        return new Vector3(position_X, plataformPosition.y , distanceAtPlatform);
     }
 }
