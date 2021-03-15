@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public float gravity;
     private bool isMovingLeft;
     private bool isMovingRight; 
+    
 
     // Start is called before the first frame update
     void Start()
