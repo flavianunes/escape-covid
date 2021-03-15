@@ -10,8 +10,16 @@ public class Player : MonoBehaviour
     public float jumpHeight;
     private float jumpSpeed = 50;
     public float gravity;
+
+    public float rayRadius;
+    public LayerMask layer;
+
     private bool isMovingLeft;
     private bool isMovingRight; 
+
+    private float firstPathPosition_X = (float)-5.4;
+    private float secondPathPosition_X = (float)0;
+    private float thirdPathPosition_X = (float)5.2;
     
 
     // Start is called before the first frame update
@@ -24,6 +32,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        OnCollision();
         Vector3 direction = Vector3.forward * speed;
 
         // Make character jump - TODO
@@ -31,7 +40,7 @@ public class Player : MonoBehaviour
         //     rb.AddForce(Vector3.up * jumpSpeed);
         // }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow) && transform.position.x < 3f && !isMovingRight) {
+        if (Input.GetKeyDown(KeyCode.RightArrow) && transform.position.x < 2.5f && !isMovingRight) {
             isMovingRight = true;
             StartCoroutine(RightMove());
         }
@@ -44,6 +53,16 @@ public class Player : MonoBehaviour
     }
 
     IEnumerator LeftMove() {
+        // nao funciona, nao aparece qual o erro :(
+        // float step =   1.0f * Time.deltaTime;
+        // Vector3 newPosition;
+        // if (transform.position.x == secondPathPosition_X) {
+        //     newPosition =  new Vector3(firstPathPosition_X, transform.position.y, transform.position.z);
+        // } else if (transform.position.x == thirdPathPosition_X) {
+        //     newPosition = new Vector3(secondPathPosition_X, transform.position.y, transform.position.z);
+        // }
+        // transform.position = Vector3.MoveTowards(transform.position, newPosition, step);
+        //Vector3 newPosition = (transform.position.x);
         for(float i=0; i<5; i += 0.1f) {
             controller.Move(Vector3.left * Time.deltaTime * 5);
             yield return null;
@@ -57,6 +76,14 @@ public class Player : MonoBehaviour
             yield return null;
         }
         isMovingRight = false;
+    }
+
+    void OnCollision() {
+        RaycastHit hit;
+        Debug.Log("hm?");
+        if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, rayRadius)) {
+            Debug.Log("bateu?");
+        };
     }
 }
 
