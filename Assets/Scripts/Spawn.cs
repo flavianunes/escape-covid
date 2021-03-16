@@ -23,7 +23,7 @@ public class Spawn : MonoBehaviour
     private float thirdPathPosition_X = (float)5.2;
                     
 
-    private List<int> deathsAtMonth = new List<int> { 10, 200, 300, 4000, 50000, 100000 };
+    private List<int> deathsAtMonth;
     private int currentMonth = 0; 
     // Start is called before the first frame update
     void Start()
@@ -77,6 +77,7 @@ public class Spawn : MonoBehaviour
     {
         Transform month = platform.transform.Find("Overpass_A").Find("Info").Find("Canvas").Find("Mês");
         Transform death = platform.transform.Find("Overpass_A").Find("Info").Find("Canvas").Find("Mortes");
+        deathsAtMonth = generateDeaths();
         month.gameObject.GetComponent<UnityEngine.UI.Text>().text = System.Convert.ToString(currentMonth + 1) + "º MÊS";
         death.gameObject.GetComponent<UnityEngine.UI.Text>().text = System.Convert.ToString(this.deathsAtMonth[currentMonth]) + " MORTES";
         this.currentMonth++;
@@ -241,6 +242,14 @@ public class Spawn : MonoBehaviour
         else Debug.Log("pathIdx fora do limite");
 
         return new Vector3(position_X, plataformPosition.y , distanceAtPlatform);
+    }
+    
+    private List<int> generateDeaths() {
+        List<int> list = new List<int> { 0, 202, 5804, 23335, 30315, 32912, 28947, 22371, 16016, 13263, 21811, 29558, 30484 };
+        for (int i = 1; i < list.Count; i++) {
+            list[i] = list[i] + list[i-1];
+        }
+        return list;
     }
 }
 
