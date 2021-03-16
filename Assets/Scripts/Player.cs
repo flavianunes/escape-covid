@@ -80,7 +80,6 @@ public class Player : MonoBehaviour
 
     void OnCollision() {
         RaycastHit hit;
-        Debug.Log("hm?");
         if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, rayRadius)) {
             Debug.Log("bateu?");
         };

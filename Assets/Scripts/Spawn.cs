@@ -21,14 +21,21 @@ public class Spawn : MonoBehaviour
     private float firstPathPosition_X = (float)-5.4;
     private float secondPathPosition_X = (float)0;
     private float thirdPathPosition_X = (float)5.2;
+                    
 
-
+    private List<int> deathsAtMonth = new List<int> { 10, 200, 300, 4000, 50000, 100000 };
+    private int currentMonth = 0; 
     // Start is called before the first frame update
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         for (int i =0; i< platforms.Count; i++) {
-            Debug.Log(platforms[i]);
+            Debug.Log("eAAAAAAAAAAAA " + platforms[i].name);
+
+            if (platforms[i].name == "Part_A")
+            {
+                SetNextInfo(platforms[i]);
+            }
             Transform p = Instantiate(platforms[i], new Vector3(0, 0, i * 86), transform.rotation).transform;
             currentPlatforms.Add(p);
             offset += 86;
@@ -55,11 +62,24 @@ public class Spawn : MonoBehaviour
 
     public void Recycle(GameObject platform) {
         platform.transform.position = new Vector3(0, 0, offset);
+        Debug.Log("platffform " + platform.name);
+        if (platform.name == "Part_A(Clone)")
+        {
+            SetNextInfo(platform);
+        }
 
         GenerateRandomObjectsAtPlatform(platform);
         
-        Debug.Log("reciclou");
         offset += 86;
+    }
+
+    private void SetNextInfo(GameObject platform)
+    {
+        Transform month = platform.transform.Find("Overpass_A").Find("Info").Find("Canvas").Find("Mês");
+        Transform death = platform.transform.Find("Overpass_A").Find("Info").Find("Canvas").Find("Mortes");
+        month.gameObject.GetComponent<UnityEngine.UI.Text>().text = System.Convert.ToString(currentMonth + 1) + "º MÊS";
+        death.gameObject.GetComponent<UnityEngine.UI.Text>().text = System.Convert.ToString(this.deathsAtMonth[currentMonth]) + " MORTES";
+        this.currentMonth++;
     }
 
     private void GenerateObstacles(GameObject platform)
@@ -83,7 +103,6 @@ public class Spawn : MonoBehaviour
         for (int i = 0; i < numberOfNewObjects; i++)
         {
             idx = Random.Range(0, this.commonObstacles.Count);
-            Debug.Log("index: " + idx);
             distanceAtPlatform += 20;
 
             InstantiateObstacle(commonObstacles[idx], platform.transform, distanceAtPlatform);
@@ -171,7 +190,6 @@ public class Spawn : MonoBehaviour
 /*        GameObject crowd = platform.transform.Find("Crowd").gameObject;
 */        foreach (Transform child in platform.transform)
         {
-            Debug.Log(child.name);
             if(child.name == "Crowd(Clone)")
                 Destroy(child.gameObject);
         }
@@ -225,3 +243,4 @@ public class Spawn : MonoBehaviour
         return new Vector3(position_X, plataformPosition.y , distanceAtPlatform);
     }
 }
+
