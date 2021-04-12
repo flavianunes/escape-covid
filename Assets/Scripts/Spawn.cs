@@ -246,6 +246,7 @@ public class Spawn : MonoBehaviour
     
     private List<int> generateDeaths() {
         List<int> list = new List<int> { 0, 202, 5804, 23335, 30315, 32912, 28947, 22371, 16016, 13263, 21811, 29558, 30484 };
+        // https://g1.globo.com/bemestar/coronavirus/noticia/2021/03/01/brasil-tem-30484-mortes-por-covid-19-em-fevereiro-2o-maior-numero-em-toda-a-pandemia.ghtml
         for (int i = 1; i < list.Count; i++) {
             list[i] = list[i] + list[i-1];
         }

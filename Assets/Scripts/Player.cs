@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
 
     public float rayRadius;
     public LayerMask layer;
+    public Animator anim;
+    private bool isDead;
 
     private bool isMovingLeft;
     private bool isMovingRight; 
@@ -21,12 +23,15 @@ public class Player : MonoBehaviour
     private float secondPathPosition_X = (float)0;
     private float thirdPathPosition_X = (float)5.2;
     
+    private GameController gc;
+
 
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
         rb = GetComponent <Rigidbody>();
+        gc = FindObjectOfType<GameController>();
     }
 
     // Update is called once per frame
@@ -34,11 +39,6 @@ public class Player : MonoBehaviour
     {
         OnCollision();
         Vector3 direction = Vector3.forward * speed;
-
-        // Make character jump - TODO
-        // if (Input.GetKeyDown(KeyCode.Space)) {
-        //     rb.AddForce(Vector3.up * jumpSpeed);
-        // }
 
         if (Input.GetKeyDown(KeyCode.RightArrow) && transform.position.x < 2.5f && !isMovingRight) {
             isMovingRight = true;
@@ -53,16 +53,6 @@ public class Player : MonoBehaviour
     }
 
     IEnumerator LeftMove() {
-        // nao funciona, nao aparece qual o erro :(
-        // float step =   1.0f * Time.deltaTime;
-        // Vector3 newPosition;
-        // if (transform.position.x == secondPathPosition_X) {
-        //     newPosition =  new Vector3(firstPathPosition_X, transform.position.y, transform.position.z);
-        // } else if (transform.position.x == thirdPathPosition_X) {
-        //     newPosition = new Vector3(secondPathPosition_X, transform.position.y, transform.position.z);
-        // }
-        // transform.position = Vector3.MoveTowards(transform.position, newPosition, step);
-        //Vector3 newPosition = (transform.position.x);
         for(float i=0; i<5; i += 0.1f) {
             controller.Move(Vector3.left * Time.deltaTime * 5);
             yield return null;
@@ -80,9 +70,16 @@ public class Player : MonoBehaviour
 
     void OnCollision() {
         RaycastHit hit;
-        if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, rayRadius)) {
-            Debug.Log("bateu?");
+        if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, rayRadius, layer) && !isDead) {
+            anim.SetTrigger("die");
+            isDead = true;
+            speed = 0;
+            Invoke("GameOver", 1f);
         };
+    }
+
+    void GameOver(){
+        gc.ShowGameOver();
     }
 }
 
