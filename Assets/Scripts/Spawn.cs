@@ -85,7 +85,7 @@ public class Spawn : MonoBehaviour
 
     private void GenerateObstacles(GameObject platform)
     {
-        float numberOfNewObjects = 4; 
+        float numberOfNewObjects = 2; 
         float newObjectPositionZ;
         float newObjectPositionX;
         float distanceAtPlatform = platform.transform.position.z - 86;
@@ -156,7 +156,7 @@ public class Spawn : MonoBehaviour
         newGoldCoinPosition.y = 3;
         for(int i = 0; i < 10; i++)
         {
-            newGoldCoinPosition.z = platform.transform.position.z + i * 3;
+            newGoldCoinPosition.z = platform.transform.position.z + i * 3 - 10;
             this.goldCoin.transform.position = newGoldCoinPosition;
             newGoldCoinInstance = Instantiate(goldCoin);
             newGoldCoinInstance.transform.parent = goldCoins.transform;
