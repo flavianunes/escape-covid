@@ -30,7 +30,6 @@ public class Spawn : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         for (int i =0; i< platforms.Count; i++) {
-            Debug.Log("eAAAAAAAAAAAA " + platforms[i].name);
 
             if (platforms[i].name == "Part_A")
             {
@@ -62,7 +61,6 @@ public class Spawn : MonoBehaviour
 
     public void Recycle(GameObject platform) {
         platform.transform.position = new Vector3(0, 0, offset);
-        Debug.Log("platffform " + platform.name);
         if (platform.name == "Part_A(Clone)")
         {
             SetNextInfo(platform);
@@ -180,6 +178,8 @@ public class Spawn : MonoBehaviour
         newBadStuffPosition.y = (float)3.2;
         newBadStuffPosition.z = platform.transform.position.z + 50;
         this.pills.transform.position = newBadStuffPosition;
+        this.pills.transform.localScale = new Vector3(3, 3, 3);
+
         newBadStuffInstance = Instantiate(this.pills);
         newBadStuffInstance.transform.parent = badStuff.transform;
 
@@ -217,6 +217,7 @@ public class Spawn : MonoBehaviour
         newGoodStuffPosition.y = (float)3.2;
         newGoodStuffPosition.z = platform.transform.position.z + 40;
         this.alcoholBottle.transform.position = newGoodStuffPosition;
+        this.alcoholBottle.transform.localScale = new Vector3(3,3,3);
         newGoodStuffInstance = Instantiate(alcoholBottle);
         newGoodStuffInstance.transform.parent = goodStuff.transform;
     }
