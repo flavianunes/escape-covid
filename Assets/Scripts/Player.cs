@@ -9,10 +9,12 @@ public class Player : MonoBehaviour
     public float speed;
     public float jumpHeight;
     private float jumpSpeed = 50;
+    public int score = 0;
     public float gravity;
 
     public float rayRadius;
-    public LayerMask layer;
+    public LayerMask layerDie;
+    public LayerMask layerScore;
     private bool isDead;
 
     private bool isMovingLeft;
@@ -44,21 +46,17 @@ public class Player : MonoBehaviour
 
         if (Input.GetKey(KeyCode.RightArrow) && transform.position.x < 5.2f && !isMovingRight) {
             isMovingRight = true;
-            Debug.Log("r");
 
             StartCoroutine(RightMove());
         }
         if (Input.GetKey(KeyCode.LeftArrow) && transform.position.x > -5.2f && !isMovingLeft) {
             isMovingLeft = true; 
-            Debug.Log("l");
 
             StartCoroutine(LeftMove());
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("jump");
             anim.SetTrigger("Jump");
-
         }
         controller.Move(direction * Time.deltaTime);
 
@@ -79,14 +77,26 @@ public class Player : MonoBehaviour
 
     void OnCollision() {
         RaycastHit hit;
-        if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, rayRadius, layer) && !isDead) {
+        if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, rayRadius, layerDie) && !isDead) {
             anim.SetTrigger("wave");
             isDead = true;
             speed = 0;
             Invoke("GameOver", 1f);
-        };
+        }
+
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Score"))
+        {
+            score++;
+            Destroy(collision.gameObject);
+            Debug.Log("Score: " + score);
+
+        }
+    }
+    
     void GameOver(){
         gc.ShowGameOver();
     }
